@@ -1,86 +1,76 @@
-# Workflow Quick Reference
+# Workflow Quick Reference（论文版）
 
-**Model:** Contractor (you direct, Claude orchestrates)
+**Model:** Contractor（你指挥，我执行）
 
 ---
 
-## The Loop
+## 最常用的循环（你记住这个就够了）
 
 ```
-Your instruction
+你一句话交代任务
     ↓
-[PLAN] (if multi-file or unclear) → Show plan → Your approval
+我先出 [PLAN]（如果任务多文件/不确定）→ 你说“同意/继续”
     ↓
-[EXECUTE] Implement, verify, done
+我执行 [EXECUTE]：修改/生成/检查
     ↓
-[REPORT] Summary + what's ready
+我给你 [REPORT]：可直接粘贴的结果 + 下一步建议
     ↓
-Repeat
+重复
 ```
 
 ---
 
-## I Ask You When
+## 我什么时候一定会问你（避免你被我“带跑偏”）
 
-- **Design forks:** "Option A (fast) vs. Option B (robust). Which?"
-- **Code ambiguity:** "Spec unclear on X. Assume Y?"
-- **Replication edge case:** "Just missed tolerance. Investigate?"
-- **Scope question:** "Also refactor Y while here, or focus on X?"
-
----
-
-## I Just Execute When
-
-- Code fix is obvious (bug, pattern application)
-- Verification (tolerance checks, tests, compilation)
-- Documentation (logs, commits)
-- Plotting (per established standards)
-- Deployment (after you approve, I ship automatically)
+- **结论不唯一**：比如“摘要写法有 2 种风格，你选哪种？”
+- **阈值/统计口径不明确**：比如“差异阈值用 padj<0.05 还是更严格？”
+- **论文结构选择**：比如“3.2 这段先讲 QC 还是先讲差异基因？”
+- **引用缺信息**：比如“这句话需要具体文献，你给我 DOI/作者年？”
 
 ---
 
-## Quality Gates (No Exceptions)
+## 我什么时候可以直接干（不需要你确认）
 
-| Score | Action |
-|-------|--------|
-| >= 80 | Ready to commit |
-| < 80  | Fix blocking issues |
-
----
-
-## Non-Negotiables (Customize These)
-
-<!-- Replace with YOUR project's locked-in preferences -->
-
-- [YOUR PATH CONVENTION] (e.g., `here::here()` for R, relative paths for LaTeX)
-- [YOUR SEED CONVENTION] (e.g., `set.seed()` once at top for stochastic code)
-- [YOUR FIGURE STANDARDS] (e.g., white bg, 300 DPI, custom theme)
-- [YOUR COLOR PALETTE] (e.g., institutional colors)
-- [YOUR TOLERANCE THRESHOLDS] (e.g., 1e-6 for point estimates)
+- 语法/错别字/格式统一
+- 图注补齐“n/方法/阈值/软件”
+- 逻辑一致性检查（Epi/EPI、D09/D12 等统一）
+- 把一段话改成更学术、更像论文（不改事实）
 
 ---
 
-## Preferences
+## Non-Negotiables（写死的规则）
 
-<!-- Fill in as you discover your working style -->
-
-**Visual:** [How you want figures/plots handled]
-**Reporting:** [Concise bullets? Detailed prose? Details on request?]
-**Session logs:** Always (post-plan, incremental, end-of-session)
-**Replication:** [How strict? Flag near-misses?]
-
----
-
-## Exploration Mode
-
-For experimental work, use the **Fast-Track** workflow:
-- Work in `explorations/` folder
-- 60/100 quality threshold (vs. 80/100 for production)
-- No plan needed — just a research value check (2 min)
-- See `.claude/rules/exploration-fast-track.md`
+- **正文交付文件**：`thesis/论文_word版.docx`（不要到处复制多个版本）
+- **图表必须可复现**：所有图表必须由脚本生成，输出到 `figures/`、`tables/`
+- **R 脚本命名**：`analysis/01_scRNA_qc_clustering.R`, `02_scRNA_cellchat.R`, `03_bulk_deseq2.R`, `04_bulk_enrichment.R`, `05_eeo_rtqpcr.R`（按流程排序）
+- **随机性控制**：有随机步骤必须写 `set.seed(固定数字)`
+- **统计报告**：优先 padj（BH）；同时报告 log2FC（必要时说明 shrink）
+- **参考文献格式**：统一 GB/T 7714-2015（正文与参考文献一致）
 
 ---
 
-## Next Step
+## Exploration Mode（试验区，允许不完美）
 
-You provide task → I plan (if needed) → Your approval → Execute → Done.
+用于“我就想试试”的分析：
+- 放在 `explorations/`
+- 60/100 就可以先存档
+- 等思路确定后再迁移到 `analysis/` 并提升质量
+
+---
+
+## Word 粘贴约定
+
+- 每段正文输出标注：`[章节: X.X 标题]` + `[位置: 段落描述]`
+- 纯文本，不用 Markdown
+- 基因名用下划线（Word 中改为斜体）：`_XBP1_`
+- 引用占位：`[AuthorYear]`
+- 前 3 个 session 每完成阶段附加 `[同步摘要]`
+
+---
+
+## 你下一步怎么用
+
+在 VS Code 里打开项目文件夹 → 打开终端 → 用自然语言给 Claude Code 下任务，例如：
+- "帮我写 3.1 单细胞方法学"
+- "创建火山图脚本"
+- "/review-r analysis/03_bulk_deseq2.R"

@@ -58,33 +58,32 @@ Produce a thorough, actionable code review report. You do NOT edit files — you
 **Flag:** Undocumented functions, magic numbers, unnamed return values, code duplication.
 
 ### 5. DOMAIN CORRECTNESS
-<!-- Customize this section for your field -->
-- [ ] Estimator implementations match the formulas shown on slides
-- [ ] Standard errors use the appropriate method
-- [ ] DGP specifications in simulations match the paper being replicated
-- [ ] Treatment effects are the correct estimand (e.g., ATT vs ATE)
+- [ ] Seurat pipeline: QC thresholds documented, SCTransform assay used consistently, subset + re-PCA/UMAP done correctly
+- [ ] DESeq2: design formula correct, contrast specified correctly, shrinkage method documented (apeglm/ashr/normal)
+- [ ] CellChat: input object and grouping metadata field consistent across analyses
+- [ ] RT-qPCR: delta-delta-Ct calculation correct, reference gene specified
 - [ ] Check `.claude/rules/r-code-conventions.md` for known pitfalls
 
-**Flag:** Implementation doesn't match theory, wrong estimand, known bugs.
+**Flag:** Wrong assay/slot after SCTransform, incorrect DESeq2 contrast, CellChat metadata mismatch.
 
 ### 6. FIGURE QUALITY
-- [ ] Consistent color palette (check your project's standard colors)
-- [ ] Custom theme applied to all plots
-- [ ] Transparent background for Beamer figures: `bg = "transparent"`
-- [ ] Explicit dimensions in `ggsave()`: `width`, `height` specified
+- [ ] Consistent color palette (check project palette in `r-code-conventions.md` Section 4)
+- [ ] Custom theme (`theme_thesis`) applied to all plots
+- [ ] Dimensions: 170mm width, 300 DPI, `units = "mm"` specified
+- [ ] Output format: PDF via `cairo_pdf` (for CJK character support)
 - [ ] Axis labels: sentence case, no abbreviations, units included
-- [ ] Legend position: bottom, readable at projection size
-- [ ] Font sizes readable when projected (base_size >= 14)
+- [ ] Legend position: bottom, readable at thesis print size
+- [ ] Font sizes readable in print (base_size >= 12)
 - [ ] No default ggplot2 colors leaking through
 
-**Flag:** Missing transparent bg, default colors, hard-to-read fonts, missing dimensions.
+**Flag:** Wrong dimensions, missing units/dpi, default colors, CJK rendering issues.
 
 ### 7. RDS DATA PATTERN
 - [ ] Every computed object has a corresponding `saveRDS()` call
 - [ ] RDS filenames are descriptive
 - [ ] Both raw results AND summary tables saved
 - [ ] File paths use `file.path()` for cross-platform compatibility
-- [ ] Missing `saveRDS()` means Quarto slides can't render — flag as HIGH severity
+- [ ] Missing `saveRDS()` means expensive computations cannot be resumed — flag as HIGH severity
 
 **Flag:** Missing `saveRDS()` for any object referenced by slides.
 

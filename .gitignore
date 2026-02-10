@@ -1,8 +1,8 @@
 # ==============================================================================
-# .gitignore for Academic Claude Code Projects
+# .gitignore for XBP1 Thesis Project (Windows + R + VS Code)
 # ==============================================================================
 
-# LaTeX build artifacts
+# LaTeX build artifacts (kept in case of future LaTeX use)
 *.aux
 *.bbl
 *.blg
@@ -18,9 +18,6 @@
 *.run.xml
 *-blx.bib
 
-# Compiled PDFs (uncomment to track specific PDFs)
-# *.pdf
-
 # Python
 __pycache__/
 *.pyc
@@ -31,6 +28,8 @@ __pycache__/
 .Rhistory
 .RData
 .Rdata
+renv/library/
+renv/staging/
 
 # OS files
 .DS_Store
@@ -50,6 +49,20 @@ Thumbs.db
 # Quarto rendering artifacts
 /.quarto/
 
-# Output artifacts — uncomment lines below based on your preference
-# *.rds
-# output/**/*.rds
+# Word temporary files
+~$*.docx
+
+# Thesis Word document (binary, too large for git version control)
+thesis/论文_word版.docx
+
+# Large data files (Seurat objects, scRNA-seq data, etc.)
+data/raw/
+data/processed/*.rds
+*.h5
+*.h5ad
+*.h5seurat
+*.h5Seurat
+
+# Large RDS files in analysis output (keep small ones)
+# Uncomment if RDS files become too large:
+# data/**/*.rds
